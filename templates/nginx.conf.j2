@@ -1,5 +1,6 @@
+{% if nginx_http_enabled %}
 server {
-    listen      [::]:80 ipv6only=off default_server;
+    listen      {{ nginx_http_bind }} ipv6only=off default_server;
     server_name {{ nginx_fqdn }};
 
     include /etc/nginx/snippets/letsencrypt.conf;
@@ -10,14 +11,17 @@ server {
     include /etc/nginx/base.d/*;
 {% endif %}
 }
+{% endif %}
 
 {% if nginx_canonicalize_https %}
 server {
-    listen [::]:443 ssl http2 ipv6only=off default_server;
+{% if nginx_enable_normal %}
+    listen {{ nginx_https_bind }} ssl http2 ipv6only=off default_server;
+{% endif %}
     server_name _;
 
 {% if nginx_enable_proxy %}
-    listen [::]:444 ssl proxy_protocol http2 ipv6only=off default_server;
+    listen {{ nginx_https_proxy_bind }} ssl proxy_protocol http2 ipv6only=off default_server;
     real_ip_header proxy_protocol;
 
 {% endif %}
@@ -45,11 +49,13 @@ server {
 
 {% endif %}
 server {
-    listen [::]:443 ssl http2{% if not nginx_canonicalize_https %} ipv6only=off default_server{% endif %};
+{% if nginx_enable_normal %}
+    listen {{ nginx_https_bind }} ssl http2{% if not nginx_canonicalize_https %} ipv6only=off default_server{% endif %};
+{% endif %}
     server_name {{ nginx_fqdn }};
 
 {% if nginx_enable_proxy %}
-    listen           [::]:444 ssl proxy_protocol http2{% if not nginx_canonicalize_https %} ipv6only=off default_server{% endif %};
+    listen           {{ nginx_https_proxy_bind }} ssl proxy_protocol http2{% if not nginx_canonicalize_https %} ipv6only=off default_server{% endif %};
     real_ip_header   proxy_protocol;
     set_real_ip_from {{ nginx_proxy_subnet }};
 

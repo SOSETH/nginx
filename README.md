@@ -12,7 +12,6 @@ Configure nginx for general use. TLS is always enabled per default enforced (in 
 |nginx_ssl_ciphers|(see `defaults/main.yml`)|A 'modern' suite of ciphers. For more general settings or general configuration advice on this matter, see [Mozilla's excellent wiki](https://wiki.mozilla.org/Security/Server_Side_TLS) on that matter.|
 |nginx_ledir|/var/www/letsencrypt|Where will Let's Encrypt challenges be located?|
 |nginx_sslonly|True|Whether to enforce SSL by only sending 302 redirects on the HTTP port|
-|nginx_enable_proxy|False|Whether to enable listening with the proxy protocol on port 444|
 |nginx_key_path|(see `defaults/main.yml`)|Path to the SSL certificate's key|
 |nginx_fullchain_path|(see `defaults/main.yml`)|Path to the certificate bundle used to verify an OCSP server's response|
 |nginx_extra_hosts|`[]`| List of extra vhosts to create. They work just like the base vhost, see `defaults/main.yml` for how to format the list|
@@ -21,6 +20,12 @@ Configure nginx for general use. TLS is always enabled per default enforced (in 
 |nginx_enable_spnego|`False`| Whether to enable SPNEGO (Kerberos) support|
 |nginx_spnego_realm|`EXAMPLE.ORG`| Which kerberos realm to use|
 |nginx_spenego_users|`[]`| If set, which users to limit auth to|
+|nginx_http_enabled|`True`| Whether to enable plain HTTP|
+|nginx_enable_normal|`True`| Whether to enable plain HTTPs|
+|nginx_enable_proxy|`False`|Whether to enable listening with the proxy protocol on port 444|
+|nginx_http_bind|`[::]:80`| Where to bind for HTTP|
+|nginx_https_bind|`[::]:443`| Where to bind for HTTPs|
+|nginx_https_proxy_bind|`[::]:444`| Where to bind for HTTPs with proxy protocol|
 
 ## Dependencies
 None.

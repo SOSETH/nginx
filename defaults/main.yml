@@ -6,6 +6,7 @@ nginx_ssl_ciphers: "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:EC
 nginx_ledir: "/var/www/letsencrypt"
 nginx_sslonly: True
 
+nginx_enable_normal: True
 nginx_enable_proxy: False
 nginx_define_root: False
 nginx_canonicalize_https: False
@@ -27,3 +28,8 @@ nginx_proxy_subnet: 192.168.0.0/16
 nginx_enable_spnego: False
 nginx_spnego_realm: EXAMPLE.ORG
 nginx_spengo_users: []
+
+nginx_http_enabled: True
+nginx_http_bind: "[::]:80"
+nginx_https_bind: "[::]:443"
+nginx_https_proxy_bind: "[::]:444"
