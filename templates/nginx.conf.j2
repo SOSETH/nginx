@@ -91,7 +91,7 @@ server {
 {% if nginx_clientcert is defined %}
     ssl_client_certificate {{ nginx_clientcert }};
     ssl_trusted_certificate {{ nginx_clientcert }};
-    ssl_verify_client optional;
+    ssl_verify_client {% if nginx_clientcert_verify is not defined %}optional{% else %}{{ nginx_clientcert_verify }}{% endif %};
     ssl_verify_depth 1;
 
 {% endif %}
