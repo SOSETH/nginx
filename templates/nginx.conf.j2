@@ -25,7 +25,6 @@ server {
     real_ip_header proxy_protocol;
 
 {% endif %}
-    ssl                     on;
     ssl_certificate         {{ nginx_fullchain_path }};
     ssl_certificate_key     {{ nginx_key_path }};
     ssl_trusted_certificate {{ nginx_fullchain_path }};
@@ -64,7 +63,6 @@ server {
     root /var/www/html;
 
 {% endif %}
-    ssl                     on;
     ssl_certificate         {{ nginx_fullchain_path }};
     ssl_certificate_key     {{ nginx_key_path }};
 {% if nginx_clientcert is not defined %}

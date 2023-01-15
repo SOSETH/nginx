@@ -29,7 +29,6 @@ server {
     root {{ item.root }};
 {% endif %}
 
-    ssl                  on;
 {% if item.cert is defined %}
     ssl_certificate      {{ item.cert }};
     ssl_certificate_key  {{ item.key }};
