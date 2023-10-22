@@ -1,27 +1,28 @@
 ---
 - name: Create custom vhost drop-in directory
-  become: True
-  file:
+  become: true
+  ansible.builtin.file:
     path: "/etc/nginx/{{ item.name }}.d"
     state: directory
+    mode: "0755"
 
 - name: Copy custom vhost
-  become: True
-  template:
+  become: true
+  ansible.builtin.template:
     src: nginx-extrahost.conf.j2
     dest: "/etc/nginx/sites-enabled/{{ item.name }}.conf"
     owner: root
     group: root
-    mode: 0644
-  notify: restart nginx
+    mode: "0644"
+  notify: Restart nginx
 
 - name: Copy custom vhost config
-  become: True
-  template:
+  become: true
+  ansible.builtin.template:
     src: nginx-vhost-config.conf.j2
     dest: "/etc/nginx/{{ item.name }}.d/main.conf"
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   when: item.config is defined and item.config|length > 0
-  notify: restart nginx
+  notify: Restart nginx

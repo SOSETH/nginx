@@ -1,7 +1,7 @@
 ---
-  - name: restart nginx
-    become: True
-    service:
-      name: nginx
-      enabled: True
-      state: restarted
+- name: Restart nginx
+  become: true
+  ansible.builtin.service:
+    name: nginx
+    enabled: true
+    state: restarted

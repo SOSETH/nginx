@@ -6,4 +6,3 @@ before_script:
 linting:
   stage: linting
   script: ansible-lint .
-

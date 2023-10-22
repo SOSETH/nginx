@@ -1,94 +1,101 @@
 ---
 - name: Install nginx
-  become: True
-  apt:
+  become: true
+  ansible.builtin.apt:
     name: nginx
     state: present
-    update_cache: True
+    update_cache: true
     cache_valid_time: 1800
 
 - name: Install nginx SPENGO module
-  become: True
+  become: true
   when: nginx_enable_spnego | bool
-  apt:
+  ansible.builtin.apt:
     name: libnginx-mod-http-auth-spnego
     state: present
-    update_cache: True
+    update_cache: true
     cache_valid_time: 1800
 
 - name: Enable nginx SPENGO module
   when: nginx_enable_spnego | bool
-  become: True
-  file:
+  become: true
+  ansible.builtin.file:
     src: /usr/share/nginx/modules-available/mod-http-auth-spnego.conf
     dest: /etc/nginx/modules-enabled/50-mod-http-auth-spnego.conf
     state: link
 
 - name: Create certificate directory
-  become: True
-  file:
+  become: true
+  ansible.builtin.file:
     path: "/etc/nginx/certs/{{ nginx_fqdn }}"
     state: directory
+    mode: "0755"
 
 - name: Create LE directory
-  become: True
-  file:
+  become: true
+  ansible.builtin.file:
     path: "{{ nginx_ledir }}"
     state: directory
+    mode: "0755"
 
 - name: Check if certificates exist
-  stat:
+  ansible.builtin.stat:
     path: "{{ nginx_fullchain_path }}"
   register: certstat
 
 - name: Copy snakeoil certificate
-  become: True
-  copy:
+  become: true
+  ansible.builtin.copy:
     src: snakeoil.pem
     dest: "{{ nginx_fullchain_path }}"
+    mode: "0640"
   when: not certstat.stat.exists
 
 - name: Copy snakeoil certificate key
-  become: True
-  copy:
+  become: true
+  ansible.builtin.copy:
     src: snakeoil.key
     dest: "{{ nginx_key_path }}"
+    mode: "0644"
   when: not certstat.stat.exists
 
 - name: Disable nginx default vhost
-  become: True
-  file:
+  become: true
+  ansible.builtin.file:
     dest: /etc/nginx/sites-enabled/default
     state: absent
-  notify: restart nginx
+  notify: Restart nginx
 
 - name: Create base vhost drop-in directory
-  become: True
-  file:
+  become: true
+  ansible.builtin.file:
     path: /etc/nginx/base.d
     state: directory
+    mode: "0755"
 
 - name: Copy config files
-  become: True
-  template:
+  become: true
+  ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   with_items:
     - { src: ranges.conf.j2, dest: /etc/nginx/conf.d/ranges.conf }
     - { src: nginx.conf.j2, dest: /etc/nginx/sites-enabled/base.conf }
     - { src: etc_nginx_snippets_letsencrypt_conf.j2, dest: /etc/nginx/snippets/letsencrypt.conf }
-  notify: restart nginx
+  notify: Restart nginx
 
-- include_tasks: vhost.yml
+- name: Configure vhosts
+  ansible.builtin.include_tasks: vhost.yml
   loop: "{{ nginx_extra_hosts }}"
 
 - name: Enable nginx
-  become: True
-  service:
+  become: true
+  ansible.builtin.service:
     name: nginx
-    enabled: yes
+    enabled: true
 
-- meta: flush_handlers
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

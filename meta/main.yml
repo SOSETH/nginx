@@ -1,16 +1,14 @@
 ---
 galaxy_info:
   author: SOSETH
+  namespace: soseth
   description: See README.md
   company: sos.ethz.ch
   issue_tracker_url: https://github.com/SOSETH/nginx/issues
   license: GPLv3
-  min_ansible_version: 2.3.0
+  min_ansible_version: "2.3.0"
   platforms:
     - name: Debian
-      versions:
-        - stretch
-        - buster
   galaxy_tags:
     - web
 dependencies: []

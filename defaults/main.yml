@@ -2,14 +2,14 @@
 # FQDN of this server
 nginx_fqdn: "{{ ansible_fqdn }}"
 nginx_ssl_protocols: "TLSv1.2 TLSv1.3"
-nginx_ssl_ciphers: "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
+nginx_ssl_ciphers: "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384" # noqa yaml[line-length]
 nginx_ledir: "/var/www/letsencrypt"
-nginx_sslonly: True
+nginx_sslonly: true
 
-nginx_enable_normal: True
-nginx_enable_proxy: False
-nginx_define_root: False
-nginx_canonicalize_https: False
+nginx_enable_normal: true
+nginx_enable_proxy: false
+nginx_define_root: false
+nginx_canonicalize_https: false
 
 nginx_key_path: '{{ (letsencrypt_install | default({})).key_path | default("/etc/nginx/certs/" ~nginx_fqdn ~"/privkey.pem") }}'
 nginx_fullchain_path: '{{ (letsencrypt_install | default({})).fullchain_path | default("/etc/nginx/certs/" ~nginx_fqdn ~"/fullchain.pem") }}'
@@ -25,11 +25,11 @@ nginx_extra_hosts: []
 
 nginx_proxy_subnet: 192.168.0.0/16
 
-nginx_enable_spnego: False
+nginx_enable_spnego: false
 nginx_spnego_realm: EXAMPLE.ORG
 nginx_spengo_users: []
 
-nginx_http_enabled: True
+nginx_http_enabled: true
 nginx_http_bind: "[::]:80"
 nginx_https_bind: "[::]:443"
 nginx_https_proxy_bind: "[::]:444"
